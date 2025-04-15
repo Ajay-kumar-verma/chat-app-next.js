@@ -10,9 +10,8 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import socket from "@/socket"; // adjust path as needed
 import User from "./user";
-const ENDPOINT = "localhost:2000";
-// const socket = io(ENDPOINT);
 
 const initialMessages: { user: string; text: string }[] = [
   { user: "Alice", text: "Hey there! 👋 How's it going?" },
@@ -39,12 +38,22 @@ const BeautifulChat = () => {
         bottomRef.current.scrollIntoView({ behavior: "smooth" });
       }
     };
+
+    socket.on("connect", () => {
+      console.log("Connected to server", socket.id);
+    });
+
+    socket.on("message", (msg) => {
+      setMessages((prev) => [...prev, msg]);
+    });
+
     scrollToBottom();
   }, [messages]);
 
   const handleSend = () => {
     if (message.trim() === "") return;
     const msg = { user: "username", text: message };
+    socket.emit("message", msg);
     setMessages((prev) => [...prev, { ...msg, user: "me" }]);
     setMessage("");
   };
