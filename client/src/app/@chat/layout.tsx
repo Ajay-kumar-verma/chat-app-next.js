@@ -8,7 +8,7 @@ import {
   ListItemAvatar,
   Avatar,
 } from "@mui/material";
-import useStore from "@/store/store";
+import useStore from "@/store";
 
 export default function RootLayout({
   children,

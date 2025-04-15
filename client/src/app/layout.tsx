@@ -9,15 +9,18 @@ export default function RootLayout({
   chat,
   userList,
   children,
+  test,
 }: Readonly<{
   chat: React.ReactNode;
   userList: React.ReactNode;
   children: React.ReactNode;
+  test: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body>
         {children}
+        {test}
         <Container
           maxWidth="xl"
           sx={{
@@ -42,7 +45,7 @@ interface RowWithDividerProps {
 
 const RowWithDivider = ({ userList, chat }: RowWithDividerProps) => (
   <Container maxWidth="xl" sx={{ display: "flex", flexDirection: "row" }}>
-    <Container>{userList}</Container>
+    <Container maxWidth="xs">{userList}</Container>
     <Container>{chat}</Container>
   </Container>
 );

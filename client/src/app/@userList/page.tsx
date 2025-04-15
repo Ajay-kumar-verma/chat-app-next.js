@@ -12,7 +12,7 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
-import useStore from "@/store/store";
+import useStore from "@/store";
 import users from "./TeamUserList";
 
 
