@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "@mui/icons-material": "^7.0.2",
-    "@mui/material": "^7.0.2"
-  },
-  "devDependencies": {
-    "@types/socket.io-client": "^1.4.36"
-  }
-}

@@ -10,11 +10,7 @@ import {
 } from "@mui/material";
 import useStore from "@/store";
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout() {
   const { CurrentUserName, CurrentUserId, currentUserRole, CurrentUserAvatar } =
     useStore();
 
@@ -83,11 +79,9 @@ export default function RootLayout({
           </ListItem>
 
           <Typography variant="h6" gutterBottom>
-           User ID <strong>{CurrentUserId}</strong>
+            User ID <strong>{CurrentUserId}</strong>
           </Typography>
         </Box>
-
-        {children}
       </Box>
     </Container>
   );
