@@ -5,7 +5,7 @@ import { Box, Button, TextField, Typography, Paper } from "@mui/material";
 import { User } from "@/interface";
 import { message } from "antd";
 import useStore from "@/store";
-import {connect, socketId,} from "@/socket"
+import { connect, socketId } from "@/socket";
 
 interface NameEntryProps {
   Login: (value: boolean) => void;
@@ -13,13 +13,13 @@ interface NameEntryProps {
 
 const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const { setCurrentUser,addUsers } = useStore();
+  const { setMyInfo } = useStore();
   const [user, setUser] = useState<User>({
     id: "0",
     name: "Aj verma",
     role: "Chori",
     avatar: "https://i.pravatar.cc/150?img=40",
-    socketId:"1"
+    socketId: "1",
   });
 
   const handleStart = async () => {
@@ -34,16 +34,13 @@ const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
         break;
       }
     }
- if(isUserDataOkay){
-  connect();
-  const id = await socketId() || "";
-  console.log({socketId:id})
-  setCurrentUser({...user,socketId:id});
-  addUsers([{...user,socketId:id}]);
-  Login(true)
-
-}
-
+    if (isUserDataOkay) {
+      connect();
+      const id = (await socketId()) || "";
+      console.log({ socketId: id });
+      setMyInfo({ ...user, socketId: id });
+      Login(true);
+    }
   };
 
   return (

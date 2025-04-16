@@ -12,35 +12,39 @@ import SendIcon from "@mui/icons-material/Send";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import User from "./user";
 import useStore from "@/store";
-import {  socketId, onConnect, onMessage, sendMessage, } from "@/socket";
+import { onMessage, sendMessage } from "@/socket";
 import { Message } from "@/interface";
 
 const BeautifulChat = () => {
-  const { Messages, addMsg, currentUser:{name} } = useStore();
+  const { Messages, addMsg, currentUser, myInfo } = useStore();
   const [message, setMessage] = useState<string>("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
- 
     onMessage((message: Message) => {
       addMsg(message);
     });
-    
+
     const scrollToBottom = () => {
       if (bottomRef.current) {
         bottomRef.current.scrollIntoView({ behavior: "smooth" });
       }
     };
-    
+
     scrollToBottom();
   }, []);
-  
+
   const handleSend = () => {
     if (message.trim() === "") return;
-    const msg = { user: name, text: message };
+    const msg = {
+      from: { socketId: myInfo.socketId || "", name: myInfo.name },
+      to: { socketId: currentUser.socketId || "", name: currentUser.name },
+      senderId: myInfo.id,
+      text: message,
+    };
     addMsg(msg);
-    setMessage("");
     sendMessage(msg);
+    setMessage("");
   };
 
   return (
@@ -61,39 +65,44 @@ const BeautifulChat = () => {
           <EmptyState message="No messages yet. Start the conversation!" />
         ) : (
           Messages.map((msg, i) => {
-            const isMe = msg.user === name;
+            const isMe: Boolean = msg.from.socketId === myInfo.socketId;
+            const IsShow: Boolean =
+              msg.from.socketId === currentUser.socketId ||
+              msg.to.socketId === currentUser.socketId;
             return (
-              <Box
-                key={i}
-                sx={{
-                  display: "flex",
-                  justifyContent: isMe ? "flex-end" : "flex-start",
-                }}
-              >
+              IsShow && (
                 <Box
+                  key={i}
                   sx={{
-                    maxWidth: "75%",
-                    bgcolor: isMe ? "primary.main" : "grey.300",
-                    color: isMe ? "white" : "black",
-                    px: 2,
-                    py: 1,
-                    borderRadius: 3,
-                    borderTopRightRadius: isMe ? 0 : 3,
-                    borderTopLeftRadius: isMe ? 3 : 0,
-                    boxShadow: 1, // Added subtle shadow
+                    display: "flex",
+                    justifyContent: isMe ? "flex-end" : "flex-start",
                   }}
                 >
-                  {!isMe && (
-                    <Typography
-                      variant="caption"
-                      sx={{ color: "text.secondary", mb: 0.5 }}
-                    >
-                      {msg.user}
-                    </Typography>
-                  )}
-                  <Typography variant="body1">{msg.text}</Typography>
+                  <Box
+                    sx={{
+                      maxWidth: "75%",
+                      bgcolor: isMe ? "primary.main" : "grey.300",
+                      color: isMe ? "white" : "black",
+                      px: 2,
+                      py: 1,
+                      borderRadius: 3,
+                      borderTopRightRadius: isMe ? 0 : 3,
+                      borderTopLeftRadius: isMe ? 3 : 0,
+                      boxShadow: 1, // Added subtle shadow
+                    }}
+                  >
+                    {!isMe && (
+                      <Typography
+                        variant="caption"
+                        sx={{ color: "text.secondary", mb: 0.5 }}
+                      >
+                        {msg.from.name}
+                      </Typography>
+                    )}
+                    <Typography variant="body1">{msg.text}</Typography>
+                  </Box>
                 </Box>
-              </Box>
+              )
             );
           })
         )}

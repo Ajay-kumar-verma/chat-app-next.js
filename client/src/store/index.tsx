@@ -5,15 +5,25 @@ import UserList from "./TeamUserList";
 import InitialMessages from "./TeamMessages";
 
 interface StoreState {
+  myInfo: User;
+  setMyInfo: (myInfo: User) => void;
   currentUser: User;
   setCurrentUser: (user: User) => void;
   Messages: Message[];
   addMsg: (msg: Message) => void;
-  Users: User[]; // Added Users property
-  addUsers: (user: User[]) => void; // Updated addUser function type
+  Users: User[];
+  addUsers: (user: User[]) => void;
 }
 
 const useStore = create<StoreState>((set) => ({
+  myInfo: {
+    id: "NAN",
+    name: "unknown",
+    role: "unknown",
+    avatar: "https://via.placeholder.com/150",
+    socketId: "",
+  },
+  setMyInfo: (myInfo: User) => set(() => ({ myInfo })),
   currentUser: {
     id: "0",
     name: "Guest",
@@ -26,7 +36,12 @@ const useStore = create<StoreState>((set) => ({
   addMsg: (msg: Message) =>
     set(({ Messages }) => ({ Messages: [...Messages, msg] })),
   Users: UserList,
-  addUsers: (user: User[]) => set(({ Users }) => ({ Users: [...new Map([...Users, ...user].map(item => [item.id, item])).values()] })),
+  addUsers: (user: User[]) =>
+    set(({ Users }) => ({
+      Users: [
+        ...new Map([...Users, ...user].map((item) => [item.id, item])).values(),
+      ],
+    })),
 }));
 
 export default useStore;

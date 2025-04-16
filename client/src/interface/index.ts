@@ -7,6 +7,8 @@ export interface User {
 }
 
 export interface Message {
-  user: string;
+  from:{socketId:string,name:string};
+  to:{socketId:string,name:string};
   text: string;
+  senderId:string
 }

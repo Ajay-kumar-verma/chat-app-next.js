@@ -14,24 +14,24 @@ import {
 } from "@mui/material";
 import { User } from "@/interface";
 import useStore from "@/store";
-import { getUsers, socketId,onNewUser, sendMyDetail } from "@/socket";
+import { getUsers,  onNewUser, sendMyDetail } from "@/socket";
 
 const UserList = () => {
-  const { currentUser, setCurrentUser, addUsers, Users } = useStore();
+  const { currentUser, setCurrentUser, addUsers, Users,myInfo } = useStore();
 
   const handleUserClick = (user: User) => {
     setCurrentUser(user);
   };
 
   useEffect(() => {
-    sendMyDetail(currentUser);
+    sendMyDetail(myInfo);
     getUsers((users: User[]) => {
-      addUsers(users);   
+      addUsers(users);
       console.log("All, usersa", { users });
     });
 
     onNewUser((user: User) => {
-      addUsers([user]);     
+      addUsers([user]);
       console.log("new user joinned: ", user);
     });
   }, []);
@@ -53,53 +53,61 @@ const UserList = () => {
             }}
           >
             <List>
-              {Users.map((user, index) => (
-                <React.Fragment key={user.name}>
-                  <ListItem
-                    onClick={() => handleUserClick(user)}
-                    sx={{
-                      height: 60, // Adjust height for the normal state
-                      display: "flex",
-                      alignItems: "center",
-                      borderRadius: 4,
-                      boxShadow: 1,
-                      p: 2, // Adjust padding for the normal state
-                      bgcolor:
-                        user?.id === currentUser.id
-                          ? "primary.light"
-                          : "transparent", // highlight selected
-                      border:
-                        user?.id === currentUser.id ? "1px solid" : "none",
-                      borderColor:
-                        user?.id === currentUser.id
-                          ? "primary.main"
-                          : "transparent",
-                      transition:
-                        "transform 0.5s ease, background-color 0.4s ease", // Smooth transition
-                      "&:hover": {
-                        backgroundColor: "grey.200", // Change background on hover
-                        transform: "scale(.9)", // Reduce size to 98% on hover
-                        cursor: "pointer", // Pointer cursor to indicate interactivity
-                      },
-                    }}
-                  >
-                    <ListItemAvatar>
-                      <Avatar
-                        sx={{ width: 32, height: 32 }}
-                        src={user.avatar}
+              {Users.length === 0 ? (
+                <Typography variant="body1" color="text.secondary">
+                  No team member has joined.
+                </Typography>
+              ) : (
+                Users.map((user, index) => (
+                  <React.Fragment key={user.name}>
+                    <ListItem
+                      onClick={() => handleUserClick(user)}
+                      sx={{
+                        height: 60, // Adjust height for the normal state
+                        display: "flex",
+                        alignItems: "center",
+                        borderRadius: 4,
+                        boxShadow: 1,
+                        p: 2, // Adjust padding for the normal state
+                        bgcolor:
+                          user?.id === currentUser.id
+                            ? "primary.light"
+                            : "transparent", // highlight selected
+                        border:
+                          user?.id === currentUser.id ? "1px solid" : "none",
+                        borderColor:
+                          user?.id === currentUser.id
+                            ? "primary.main"
+                            : "transparent",
+                        transition:
+                          "transform 0.5s ease, background-color 0.4s ease", // Smooth transition
+                        "&:hover": {
+                          backgroundColor: "grey.200", // Change background on hover
+                          transform: "scale(.9)", // Reduce size to 98% on hover
+                          cursor: "pointer", // Pointer cursor to indicate interactivity
+                        },
+                      }}
+                    >
+                      <ListItemAvatar>
+                        <Avatar
+                          sx={{ width: 32, height: 32 }}
+                          src={user.avatar}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={user.name}
+                        secondary={user.role}
+                        slotProps={{
+                          primary: { style: { fontWeight: "bold" } },
+                        }}
                       />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={user.name}
-                      secondary={user.role}
-                      slotProps={{ primary: { style: { fontWeight: "bold" } } }}
-                    />
-                  </ListItem>
-                  {index < Users.length - 1 && (
-                    <Divider variant="inset" component="li" />
-                  )}
-                </React.Fragment>
-              ))}
+                    </ListItem>
+                    {index < Users.length - 1 && (
+                      <Divider variant="inset" component="li" />
+                    )}
+                  </React.Fragment>
+                ))
+              )}
             </List>
           </Box>
         </CardContent>

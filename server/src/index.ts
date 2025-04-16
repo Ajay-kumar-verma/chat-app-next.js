@@ -30,6 +30,7 @@ app.get('/api/ping', (req, res) => {
 let users: User[] = [];
 
 io.on('connection', (socket) => {
+  socket.emit('message',{user:"Team", text:'Welcome to the chat!'}); // send a welcome message to the client
   
   socket.on('myDetail',(user:User)=>{
     socket.broadcast.emit('newUser',user);
@@ -41,16 +42,16 @@ io.on('connection', (socket) => {
  
   // console.log('Socket connected:', socket.id);
 
-  socket.emit('message',{user:"Team", text:'Welcome to the chat!'}); // send a welcome message to the client
 
   socket.on('message', (data) => {
+    io.to(data.to.socketId).emit("message", data);
     console.log('Received message:', data);
-    socket.broadcast.emit('message', data); // broadcast to other clients
+    // socket.broadcast.emit('message', data); 
   });
 
   socket.on('disconnect', () => {
     console.log("Before filter: ",users)
-    users = users.filter(({socketId})=>socketId !== socket.id) 
+    // users = users.filter(({socketId})=>socketId !== socket.id) 
     console.log("After filter: ",users)
     console.log('Socket disconnected:', socket.id);
   });
