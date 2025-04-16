@@ -1,29 +1,36 @@
 // socket.ts
 import { io } from "socket.io-client";
-
+import { Message, User } from "@/interface";
 const socket = io("http://localhost:3001", {
   autoConnect: false, // disable auto connection
 });
 
 export default socket;
 
-export const connectSocket = () => {
+export const socketId = () => {
+  return socket.id;
+};
+
+export const connect = () => {
   socket.connect();
 };
-
-export const sendMessage = (message: string) => {
-  socket.emit("message", message);
+export const onConnect = (callback: () => void) => {
+  socket.on("connect", callback);
 };
 
-socket.on("message",()=>{
-  
-})
-
-export const onMessage = (callback: (message: string) => void) => {
+export const onMessage = (callback: (message: Message) => void) => {
   socket.on("message", callback);
 };
 
-export const disconnectSocket = () => {
+export const sendMessage = (message: Message) => {
+  socket.emit("message", message);
+};
+
+export const getUsers = (callback: (users: User[]) => void) => {
+  socket.on("getUsers", callback);
+};
+
+export const disconnect = () => {
   socket.disconnect();
 };
 

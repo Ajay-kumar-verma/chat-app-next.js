@@ -10,9 +10,10 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import socket from "@/socket"; // adjust path as needed
 import User from "./user";
 import useStore from "@/store";
+import { connect, socketId, onConnect, onMessage, sendMessage } from "@/socket";
+import { Message } from "@/interface";
 
 const BeautifulChat = () => {
   const { Messages, addMsg, CurrentUserName } = useStore();
@@ -20,9 +21,10 @@ const BeautifulChat = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    socket.connect();
-    socket.on("connect", () => {
-      console.log("Connected to server", socket.id);
+    connect();
+    onConnect(() => {
+  console.log(` you are connected with ID: ${socketId()}`)
+
     });
 
     const scrollToBottom = () => {
@@ -30,12 +32,10 @@ const BeautifulChat = () => {
         bottomRef.current.scrollIntoView({ behavior: "smooth" });
       }
     };
-
-    socket.on("message", (msg) => { 
-      console.log(msg)
-      addMsg(msg);
-    });
-
+    
+    onMessage((message:Message)=>{
+    addMsg(message);
+    })
     scrollToBottom();
   }, []);
 
@@ -44,7 +44,7 @@ const BeautifulChat = () => {
     const msg = { user: CurrentUserName, text: message };
     addMsg(msg);
     setMessage("");
-    socket.emit("message", msg);
+    sendMessage(msg)
   };
 
   return (

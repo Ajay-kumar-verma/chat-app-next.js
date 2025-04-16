@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -12,21 +12,27 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
-import useStore from "@/store";
 import { User } from "@/interface";
-
+import useStore from "@/store";
+import { getUsers } from "@/socket";
 
 const UserList = () => {
-  const { CurrentUserId, setCurrentUser ,Users} = useStore();
+  const { CurrentUserId, setCurrentUser, Users } = useStore();
 
   const handleUserClick = (user: User) => {
     console.log(`User clicked:`, user);
-    // Update the store with the clicked user's details
     setCurrentUser(user);
-    // Optionally, you can navigate to a different page or perform other actions here
   };
+
+  useEffect(() => {
+     getUsers((users: User[])=>{
+      console.log("All, usersa",{users})
+     })
+
+  }, []);
+
   return (
-    <Box sx={{ maxWidth: 800, margin: "auto", mt: 5 ,}}>
+    <Box sx={{ maxWidth: 800, margin: "auto", mt: 5 }}>
       <Card elevation={4} sx={{ borderRadius: 4 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>

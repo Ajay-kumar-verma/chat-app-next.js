@@ -19,8 +19,20 @@ app.get('/api/ping', (req, res) => {
   res.json({ message: 'pong' });
 });
 
+ interface User {
+  id: string;
+  name?: string;
+  role?: string;
+  avatar?: string;
+}
+
+const users: User[] = [];
+
 io.on('connection', (socket) => {
+  users.push({ id: socket.id }) 
   console.log('Socket connected:', socket.id);
+  socket.broadcast.emit('getUsers',users)
+
   socket.emit('message',{user:"Team", text:'Welcome to the chat!'}); // send a welcome message to the client
 
   socket.on('message', (data) => {
