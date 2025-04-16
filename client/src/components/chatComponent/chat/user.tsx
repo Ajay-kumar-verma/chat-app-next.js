@@ -11,8 +11,10 @@ import {
 import useStore from "@/store";
 
 export default function RootLayout() {
-  const { CurrentUserName, CurrentUserId, currentUserRole, CurrentUserAvatar } =
-    useStore();
+  const {
+    currentUser: { name, id, role, avatar },
+  } = useStore();
+  
   return (
     <Container maxWidth="xl">
       <Box
@@ -67,18 +69,18 @@ export default function RootLayout() {
                     cursor: "pointer", // Change cursor to indicate interactivity
                   },
                 }}
-                src={CurrentUserAvatar}
+                src={avatar}
               />
             </ListItemAvatar>
             <ListItemText
-              primary={CurrentUserId === "0" ? "YOU" : CurrentUserName}
-              secondary={currentUserRole}
+              primary={id === "0" ? "YOU" : name}
+              secondary={role}
               slotProps={{ primary: { style: { fontWeight: "bold" } } }}
             />
           </ListItem>
 
           <Typography variant="h6" gutterBottom>
-            User ID <strong>{CurrentUserId}</strong>
+            User ID <strong>{id}</strong>
           </Typography>
         </Box>
       </Box>

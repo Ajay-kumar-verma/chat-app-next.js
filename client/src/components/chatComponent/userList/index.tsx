@@ -14,21 +14,26 @@ import {
 } from "@mui/material";
 import { User } from "@/interface";
 import useStore from "@/store";
-import { getUsers } from "@/socket";
+import { getUsers, socketId,onNewUser, sendMyDetail } from "@/socket";
 
 const UserList = () => {
-  const { CurrentUserId, setCurrentUser, Users } = useStore();
+  const { currentUser, setCurrentUser, addUsers, Users } = useStore();
 
   const handleUserClick = (user: User) => {
-    console.log(`User clicked:`, user);
     setCurrentUser(user);
   };
 
   useEffect(() => {
-     getUsers((users: User[])=>{
-      console.log("All, usersa",{users})
-     })
+    sendMyDetail(currentUser);
+    getUsers((users: User[]) => {
+      addUsers(users);   
+      console.log("All, usersa", { users });
+    });
 
+    onNewUser((user: User) => {
+      addUsers([user]);     
+      console.log("new user joinned: ", user);
+    });
   }, []);
 
   return (
@@ -60,12 +65,13 @@ const UserList = () => {
                       boxShadow: 1,
                       p: 2, // Adjust padding for the normal state
                       bgcolor:
-                        user?.id === CurrentUserId
+                        user?.id === currentUser.id
                           ? "primary.light"
                           : "transparent", // highlight selected
-                      border: user?.id === CurrentUserId ? "1px solid" : "none",
+                      border:
+                        user?.id === currentUser.id ? "1px solid" : "none",
                       borderColor:
-                        user?.id === CurrentUserId
+                        user?.id === currentUser.id
                           ? "primary.main"
                           : "transparent",
                       transition:

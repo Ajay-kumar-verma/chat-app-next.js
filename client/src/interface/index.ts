@@ -1,17 +1,9 @@
-import { Message } from "@mui/icons-material";
-
 export interface User {
   id: string;
   name: string;
   role: string;
   avatar: string;
-}
-
-export interface UserDetails {
-  CurrentUserId: string;
-  CurrentUserName: string;
-  currentUserRole: string;
-  CurrentUserAvatar: string;
+  socketId?:string;
 }
 
 export interface Message {

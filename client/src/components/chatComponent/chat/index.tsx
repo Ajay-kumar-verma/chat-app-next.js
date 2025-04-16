@@ -12,39 +12,35 @@ import SendIcon from "@mui/icons-material/Send";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import User from "./user";
 import useStore from "@/store";
-import { connect, socketId, onConnect, onMessage, sendMessage } from "@/socket";
+import {  socketId, onConnect, onMessage, sendMessage, } from "@/socket";
 import { Message } from "@/interface";
 
 const BeautifulChat = () => {
-  const { Messages, addMsg, CurrentUserName } = useStore();
+  const { Messages, addMsg, currentUser:{name} } = useStore();
   const [message, setMessage] = useState<string>("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    connect();
-    onConnect(() => {
-  console.log(` you are connected with ID: ${socketId()}`)
-
+ 
+    onMessage((message: Message) => {
+      addMsg(message);
     });
-
+    
     const scrollToBottom = () => {
       if (bottomRef.current) {
         bottomRef.current.scrollIntoView({ behavior: "smooth" });
       }
     };
     
-    onMessage((message:Message)=>{
-    addMsg(message);
-    })
     scrollToBottom();
   }, []);
-
+  
   const handleSend = () => {
     if (message.trim() === "") return;
-    const msg = { user: CurrentUserName, text: message };
+    const msg = { user: name, text: message };
     addMsg(msg);
     setMessage("");
-    sendMessage(msg)
+    sendMessage(msg);
   };
 
   return (
@@ -65,7 +61,7 @@ const BeautifulChat = () => {
           <EmptyState message="No messages yet. Start the conversation!" />
         ) : (
           Messages.map((msg, i) => {
-            const isMe = msg.user === CurrentUserName;
+            const isMe = msg.user === name;
             return (
               <Box
                 key={i}

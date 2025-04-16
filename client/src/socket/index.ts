@@ -7,15 +7,34 @@ const socket = io("http://localhost:3001", {
 
 export default socket;
 
-export const socketId = () => {
-  return socket.id;
-};
-
 export const connect = () => {
   socket.connect();
 };
+
+export const socketId = async () => {
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(`Resolved`);
+    }, 100);
+  });
+
+  return socket.id;
+};
+
 export const onConnect = (callback: () => void) => {
   socket.on("connect", callback);
+};
+
+export const sendMyDetail = (user: User) => {
+  socket.emit("myDetail", user);
+};
+
+export const getUsers = (callback: (users: User[]) => void) => {
+  socket.on("getUsers", callback);
+};
+
+export const onNewUser = (callback: (user: User) => void) => {
+  socket.on("newUser", callback);
 };
 
 export const onMessage = (callback: (message: Message) => void) => {
@@ -24,10 +43,6 @@ export const onMessage = (callback: (message: Message) => void) => {
 
 export const sendMessage = (message: Message) => {
   socket.emit("message", message);
-};
-
-export const getUsers = (callback: (users: User[]) => void) => {
-  socket.on("getUsers", callback);
 };
 
 export const disconnect = () => {

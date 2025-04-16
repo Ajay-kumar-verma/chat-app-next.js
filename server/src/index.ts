@@ -21,17 +21,25 @@ app.get('/api/ping', (req, res) => {
 
  interface User {
   id: string;
-  name?: string;
-  role?: string;
-  avatar?: string;
+  name: string;
+  role: string;
+  avatar: string;
+  socketId:string
 }
 
-const users: User[] = [];
+let users: User[] = [];
 
 io.on('connection', (socket) => {
-  users.push({ id: socket.id }) 
-  console.log('Socket connected:', socket.id);
-  socket.broadcast.emit('getUsers',users)
+  
+  socket.on('myDetail',(user:User)=>{
+    socket.broadcast.emit('newUser',user);
+    socket.emit('getUsers',users);
+    users.push(user);
+    console.log("All connected users: ",users)
+  })
+
+ 
+  // console.log('Socket connected:', socket.id);
 
   socket.emit('message',{user:"Team", text:'Welcome to the chat!'}); // send a welcome message to the client
 
@@ -41,6 +49,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
+    console.log("Before filter: ",users)
+    users = users.filter(({socketId})=>socketId !== socket.id) 
+    console.log("After filter: ",users)
     console.log('Socket disconnected:', socket.id);
   });
 });
