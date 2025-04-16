@@ -12,50 +12,39 @@ import SendIcon from "@mui/icons-material/Send";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import socket from "@/socket"; // adjust path as needed
 import User from "./user";
-
-const initialMessages: { user: string; text: string }[] = [
-  { user: "Alice", text: "Hey there! 👋 How's it going?" },
-  {
-    user: "Bob",
-    text: "Hey! 😄 All good here. Just working on the project. 💻",
-  },
-  {
-    user: "Alice",
-    text: "Nice! 👍 Let me know if you need help with anything. 🧠",
-  },
-  { user: "Bob", text: "Sure thing, appreciate it! 🙌" },
-];
+import useStore from "@/store";
 
 const BeautifulChat = () => {
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] =
-    useState<{ user: string; text: string }[]>(initialMessages);
+  const { Messages, addMsg, CurrentUserName } = useStore();
+  const [message, setMessage] = useState<string>("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    socket.connect();
+    socket.on("connect", () => {
+      console.log("Connected to server", socket.id);
+    });
+
     const scrollToBottom = () => {
       if (bottomRef.current) {
         bottomRef.current.scrollIntoView({ behavior: "smooth" });
       }
     };
 
-    socket.on("connect", () => {
-      console.log("Connected to server", socket.id);
-    });
-
-    socket.on("message", (msg) => {
-      setMessages((prev) => [...prev, msg]);
+    socket.on("message", (msg) => { 
+      console.log(msg)
+      addMsg(msg);
     });
 
     scrollToBottom();
-  }, [messages]);
+  }, []);
 
   const handleSend = () => {
     if (message.trim() === "") return;
-    const msg = { user: "username", text: message };
-    socket.emit("message", msg);
-    setMessages((prev) => [...prev, { ...msg, user: "me" }]);
+    const msg = { user: CurrentUserName, text: message };
+    addMsg(msg);
     setMessage("");
+    socket.emit("message", msg);
   };
 
   return (
@@ -72,11 +61,11 @@ const BeautifulChat = () => {
     >
       <User />
       <Stack spacing={2}>
-        {messages.length === 0 ? (
+        {Messages.length === 0 ? (
           <EmptyState message="No messages yet. Start the conversation!" />
         ) : (
-          messages.map((msg, i) => {
-            const isMe = msg.user === "me";
+          Messages.map((msg, i) => {
+            const isMe = msg.user === CurrentUserName;
             return (
               <Box
                 key={i}

@@ -1,6 +1,6 @@
+import {User} from '@/interface'
 
-
- export default [
+ const UserList :User[]=[
     {
       id: "1",
       name: "Alice Johnson",
@@ -122,3 +122,6 @@
       avatar: "https://i.pravatar.cc/150?img=20",
     },
   ];
+
+
+  export default  UserList;

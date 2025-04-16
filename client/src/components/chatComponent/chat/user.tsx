@@ -72,7 +72,7 @@ export default function RootLayout() {
               />
             </ListItemAvatar>
             <ListItemText
-              primary={CurrentUserName}
+              primary={CurrentUserId === "0" ? "YOU" : CurrentUserName}
               secondary={currentUserRole}
               slotProps={{ primary: { style: { fontWeight: "bold" } } }}
             />

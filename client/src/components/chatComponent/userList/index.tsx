@@ -13,11 +13,10 @@ import {
   Divider,
 } from "@mui/material";
 import useStore from "@/store";
-import users from "./TeamUserList";
 
 
 const UserList = () => {
-  const { CurrentUserId, setUserDetails } = useStore();
+  const { CurrentUserId, setUserDetails ,Users} = useStore();
 
   const handleUserClick = (user: {
     id: string;
@@ -36,7 +35,7 @@ const UserList = () => {
     // Optionally, you can navigate to a different page or perform other actions here
   };
   return (
-    <Box sx={{ maxWidth: 800, margin: "auto", mt: 5 }}>
+    <Box sx={{ maxWidth: 800, margin: "auto", mt: 5 ,}}>
       <Card elevation={4} sx={{ borderRadius: 4 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
@@ -52,7 +51,7 @@ const UserList = () => {
             }}
           >
             <List>
-              {users.map((user, index) => (
+              {Users.map((user, index) => (
                 <React.Fragment key={user.name}>
                   <ListItem
                     onClick={() => handleUserClick(user)}
@@ -93,7 +92,7 @@ const UserList = () => {
                       slotProps={{ primary: { style: { fontWeight: "bold" } } }}
                     />
                   </ListItem>
-                  {index < users.length - 1 && (
+                  {index < Users.length - 1 && (
                     <Divider variant="inset" component="li" />
                   )}
                 </React.Fragment>

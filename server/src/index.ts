@@ -21,7 +21,7 @@ app.get('/api/ping', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('Socket connected:', socket.id);
-  socket.emit('message',{user:"me", text:'Welcome to the chat!'}); // send a welcome message to the client
+  socket.emit('message',{user:"Team", text:'Welcome to the chat!'}); // send a welcome message to the client
 
   socket.on('message', (data) => {
     console.log('Received message:', data);

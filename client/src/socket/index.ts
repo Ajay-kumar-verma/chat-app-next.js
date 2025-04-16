@@ -15,6 +15,10 @@ export const sendMessage = (message: string) => {
   socket.emit("message", message);
 };
 
+socket.on("message",()=>{
+  
+})
+
 export const onMessage = (callback: (message: string) => void) => {
   socket.on("message", callback);
 };
