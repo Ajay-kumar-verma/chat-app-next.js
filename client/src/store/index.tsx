@@ -4,12 +4,8 @@ import { User, Message, UserDetails } from "@/interface";
 import UserList from "./TeamUserList";
 import InitialMessages from "./TeamMessages";
 
-interface StoreState {
-  CurrentUserName: string;
-  CurrentUserId: string;
-  CurrentUserAvatar: string;
-  currentUserRole: string;
-  setUserDetails: (userDetails: UserDetails) => void;
+interface StoreState extends UserDetails {
+  setCurrentUser: (user: User) => void;
   Messages: Message[];
   addMsg: (msg: Message) => void;
   Users: User[]; // Added Users property
@@ -21,13 +17,18 @@ const useStore = create<StoreState>((set) => ({
   CurrentUserName: "Guest",
   currentUserRole: "Guest",
   CurrentUserAvatar: "https://via.placeholder.com/150",
-  setUserDetails: (userDetails: UserDetails) =>
-    set((state) => ({ ...state, ...userDetails })),
+  setCurrentUser: (user: User) =>
+    set(() => ({
+      CurrentUserName: user.name,
+      CurrentUserId: user.id,
+      currentUserRole: user.role,
+      CurrentUserAvatar: user.avatar,
+    })),
   Messages: InitialMessages,
   addMsg: (msg: Message) =>
     set((state) => ({ Messages: [...state.Messages, msg] })),
   Users: UserList,
-  addUser: (user: User) => set((state) => ({ Users: [...state.Users, user] })),
+  addUser: (user: User) => set(({ Users }) => ({ Users: [...Users, user] })),
 }));
 
 export default useStore;

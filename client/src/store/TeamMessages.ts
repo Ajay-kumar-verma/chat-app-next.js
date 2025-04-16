@@ -1,4 +1,5 @@
-const initialMessages: { user: string; text: string }[] = [
+import { Message } from "@/interface/";
+const initialMessages:Message[] = [
   { user: "Alice", text: "Hey there! 👋 How's it going?" },
   {
     user: "Bob",

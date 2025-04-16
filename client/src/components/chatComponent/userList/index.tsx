@@ -13,25 +13,16 @@ import {
   Divider,
 } from "@mui/material";
 import useStore from "@/store";
+import { User } from "@/interface";
 
 
 const UserList = () => {
-  const { CurrentUserId, setUserDetails ,Users} = useStore();
+  const { CurrentUserId, setCurrentUser ,Users} = useStore();
 
-  const handleUserClick = (user: {
-    id: string;
-    name: string;
-    role: string;
-    avatar: string;
-  }) => {
+  const handleUserClick = (user: User) => {
     console.log(`User clicked:`, user);
     // Update the store with the clicked user's details
-    setUserDetails({
-      CurrentUserName: user.name,
-      CurrentUserId: user.id.toString(),
-      CurrentUserAvatar: user.avatar,
-      currentUserRole: user.role,
-    });
+    setCurrentUser(user);
     // Optionally, you can navigate to a different page or perform other actions here
   };
   return (

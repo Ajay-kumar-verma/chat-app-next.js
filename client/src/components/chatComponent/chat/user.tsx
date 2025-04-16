@@ -13,7 +13,6 @@ import useStore from "@/store";
 export default function RootLayout() {
   const { CurrentUserName, CurrentUserId, currentUserRole, CurrentUserAvatar } =
     useStore();
-
   return (
     <Container maxWidth="xl">
       <Box
