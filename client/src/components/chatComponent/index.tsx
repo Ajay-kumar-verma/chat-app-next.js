@@ -1,58 +1,49 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Box, Paper } from "@mui/material";
 import UserList from "./userList";
 import ChatSection from "./chat";
 
-const initialMessages: { user: string; text: string }[] = [
-  { user: "Alice", text: "Hey there! 👋 How's it going?" },
-  {
-    user: "Bob",
-    text: "Hey! 😄 All good here. Just working on the project. 💻",
-  },
-  {
-    user: "Alice",
-    text: "Nice! 👍 Let me know if you need help with anything. 🧠",
-  },
-  { user: "Bob", text: "Sure thing, appreciate it! 🙌" },
-];
-
 const BeautifulChat = () => {
-  useState<{ user: string; text: string }[]>(initialMessages);
-
   return (
-    <Paper
-      elevation={3}
+    <Box
       sx={{
-        flexGrow: 1,
-        p: 1,
-        overflowY: "auto",
-        mb: 2,
-        mx: 1,
-        borderRadius: 2,
+        display: "flex",
+        flexDirection: "row",
+        height: "100vh",
         bgcolor: "background.default",
-        maxHeight: "calc(100vh - 1px)", // Limit height
+        p: 1,
       }}
     >
-      <Box display="flex" alignItems="center" justifyContent="space-between">
+      {/* User List Section */}
+      <Paper
+        elevation={3}
+        sx={{
+          flex: "0 0 300px", // Fixed width for the user list
+          p: 1,
+          overflowY: "auto",
+          borderRadius: 2,
+          bgcolor: "background.paper",
+          mr: 2, // Add margin to separate from chat section
+        }}
+      >
         <UserList />
-        <Paper
-          elevation={3}
-          sx={{
-            flexGrow: 1,
-            p: 1,
-            overflowY: "auto",
-            mb: 2,
-            mx: 1,
-            borderRadius: 2,
-            bgcolor: "background.default",
-            maxHeight: "calc(100vh - 150px)", // Limit height
-          }}
-        >
-          <ChatSection />
-        </Paper>
-      </Box>
-    </Paper>
+      </Paper>
+
+      {/* Chat Section */}
+      <Paper
+        elevation={3}
+        sx={{
+          flexGrow: 1,
+          p: 1,
+          overflowY: "auto",
+          borderRadius: 2,
+          bgcolor: "background.paper",
+        }}
+      >
+        <ChatSection />
+      </Paper>
+    </Box>
   );
 };
 

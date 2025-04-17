@@ -13,7 +13,7 @@ import useStore from "@/store";
 import { connect, disConnect, socketId, sendMyDetail } from "@/socket";
 import { useState } from "react";
 
-export default function RootLayout() {
+export default function UserComponent() {
   const {
     currentUser: { name, id, role, avatar },
   } = useStore();
@@ -24,9 +24,9 @@ export default function RootLayout() {
         sx={{
           height: "100%",
           display: "flex",
-          flexDirection: "column", // stack children vertically
-          justifyContent: "center", // center vertically
-          alignItems: "center", // center horizontally
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <Box
@@ -41,10 +41,10 @@ export default function RootLayout() {
           <ListItem
             sx={{
               height: 60,
-              width: 300, // Adjust height for the normal state
+              width: 300,
               display: "flex",
               alignItems: "center",
-              p: 2, // Adjust padding for the normal state
+              p: 2,
               bgcolor: "primary.light",
               borderRadius: 5,
               boxShadow: 1,
@@ -57,7 +57,7 @@ export default function RootLayout() {
                 color: "white",
               },
               transition: "background-color 0.3s ease",
-              cursor: "pointer", // Pointer cursor to indicate interactivity
+              cursor: "pointer",
             }}
           >
             <ListItemAvatar>
@@ -65,11 +65,11 @@ export default function RootLayout() {
                 sx={{
                   width: 40,
                   height: 40,
-                  transition: "all 0.3s ease", // Smooth transition for width and height change
+                  transition: "all 0.3s ease",
                   "&:hover": {
-                    width: 60, // Increase width on hover
-                    height: 60, // Increase height on hover
-                    cursor: "pointer", // Change cursor to indicate interactivity
+                    width: 60,
+                    height: 60,
+                    cursor: "pointer",
                   },
                 }}
                 src={avatar}
@@ -92,14 +92,20 @@ export default function RootLayout() {
 
 const ColorToggleButton = () => {
   const { setMyInfo, myInfo } = useStore();
-  const [clicked, setClicked] = useState(false);
+  const [clicked, setClicked] = useState<boolean>(false);
 
-  const handleClick = async () => {
+  const handleConnect = async () => {
     connect();
     const id = (await socketId()) || "";
-    setMyInfo({ ...myInfo, socketId: id });
-    sendMyDetail({ ...myInfo, socketId: id });
-    setClicked((prev) => !prev);
+    const updatedInfo = { ...myInfo, socketId: id };
+    setMyInfo(updatedInfo);
+    sendMyDetail(updatedInfo);
+    setClicked(true);
+  };
+
+  const handleDisconnect = () => {
+    disConnect();
+    setClicked(false);
   };
 
   return (
@@ -107,14 +113,7 @@ const ColorToggleButton = () => {
       {clicked ? "🟢" : "🔴"}
       <Button
         variant="contained"
-        onClick={
-          clicked
-            ? () => {
-                disConnect();
-                setClicked((prev) => !prev);
-              }
-            : handleClick
-        }
+        onClick={clicked ? handleDisconnect : handleConnect}
         sx={{
           backgroundColor: clicked ? "#4caf50" : "#e91e63",
           "&:hover": {

@@ -1,4 +1,4 @@
-// store.js
+// store.ts
 import { create } from "zustand";
 import { User, Message } from "@/interface";
 import UserList from "./TeamUserList";
@@ -12,8 +12,8 @@ interface StoreState {
   Messages: Message[];
   addMsg: (msg: Message) => void;
   Users: User[];
-  addUsers: (user: User[]) => void;
-  removeUser: (id: string) => void;
+  addUsers: (users: User[]) => void;
+  removeUser: (socketId: string) => void;
 }
 
 const useStore = create<StoreState>((set) => ({
@@ -25,6 +25,7 @@ const useStore = create<StoreState>((set) => ({
     socketId: "",
   },
   setMyInfo: (myInfo: User) => set(() => ({ myInfo })),
+
   currentUser: {
     id: "0",
     name: "Guest",
@@ -33,19 +34,22 @@ const useStore = create<StoreState>((set) => ({
     socketId: "",
   },
   setCurrentUser: (currentUser: User) => set(() => ({ currentUser })),
+
   Messages: InitialMessages,
   addMsg: (msg: Message) =>
     set(({ Messages }) => ({ Messages: [...Messages, msg] })),
+
   Users: UserList,
-  addUsers: (user: User[]) =>
+  addUsers: (users: User[]) =>
     set(({ Users }) => ({
       Users: [
-        ...new Map([...Users, ...user].map((item) => [item.id, item])).values(),
+        ...new Map([...Users, ...users].map((item) => [item.id, item])).values(),
       ],
     })),
-  removeUser: (id: string) =>
+
+  removeUser: (socketId: string) =>
     set(({ Users }) => ({
-      Users: [...Users.filter(({ socketId }) => socketId !== id)],
+      Users: Users.filter((user) => user.socketId !== socketId),
     })),
 }));
 

@@ -74,54 +74,6 @@ const UserList: User[] = [];
 //       role: "Mobile Developer",
 //       avatar: "https://i.pravatar.cc/150?img=12",
 //     },
-//     {
-//       id: "13",
-//       name: "Mike Davis",
-//       role: "Security Engineer",
-//       avatar: "https://i.pravatar.cc/150?img=13",
-//     },
-//     {
-//       id: "14",
-//       name: "Nina Parker",
-//       role: "Agile Coach",
-//       avatar: "https://i.pravatar.cc/150?img=14",
-//     },
-//     {
-//       id: "15",
-//       name: "Oliver Stone",
-//       role: "Tech Lead",
-//       avatar: "https://i.pravatar.cc/150?img=15",
-//     },
-//     {
-//       id: "16",
-//       name: "Paula Reed",
-//       role: "UI Developer",
-//       avatar: "https://i.pravatar.cc/150?img=16",
-//     },
-//     {
-//       id: "17",
-//       name: "Quincy Moore",
-//       role: "Infrastructure Engineer",
-//       avatar: "https://i.pravatar.cc/150?img=17",
-//     },
-//     {
-//       id: "18",
-//       name: "Rachel Kim",
-//       role: "Machine Learning Engineer",
-//       avatar: "https://i.pravatar.cc/150?img=18",
-//     },
-//     {
-//       id: "19",
-//       name: "Samuel Brooks",
-//       role: "Database Admin",
-//       avatar: "https://i.pravatar.cc/150?img=19",
-//     },
-//     {
-//       id: "20",
-//       name: "Tina Foster",
-//       role: "Customer Success       Manager",
-//       avatar: "https://i.pravatar.cc/150?img=20",
-//     },
 //   ];
 
 export default UserList;

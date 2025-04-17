@@ -1,6 +1,5 @@
 "use client";
-// components/NameEntry.tsx
-import { useState } from "react";
+import React, { useState } from "react";
 import { Box, Button, TextField, Typography, Paper } from "@mui/material";
 import { User } from "@/interface";
 import { message } from "antd";
@@ -21,8 +20,15 @@ const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
     socketId: "1",
   });
 
+  const handleInputChange = (field: keyof User, value: string) => {
+    setUser((prev) => ({
+      ...prev,
+      [field]: value.trim(),
+    }));
+  };
+
   const handleStart = async () => {
-    let isUserDataOkay: boolean = true;
+    let isUserDataOkay = true;
     for (const key of Object.keys(user)) {
       if (user[key as keyof User] === "") {
         messageApi.open({
@@ -52,38 +58,28 @@ const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
       >
         {contextHolder}
         <Paper elevation={3} sx={{ p: 4, maxWidth: 400, mx: "auto" }}>
-          {(["name", "id", "role", "avatar"] as (keyof User)[]).map(
-            (field, i) => {
-              return (
-                <div key={i}>
-                  <Typography variant="h5" gutterBottom>
-                    Enter your {field}
-                  </Typography>
-                  <TextField
-                    required
-                    fullWidth
-                    label={`Your ${field}`}
-                    variant="outlined"
-                    value={user[field]}
-                    onChange={(e) =>
-                      setUser((pre) => ({
-                        ...pre,
-                        [field]: e.target.value.trim(),
-                      }))
-                    }
-                    sx={{ my: 2 }}
-                  />
-                </div>
-              );
-            }
-          )}
+          {(["name", "id", "role", "avatar"] as (keyof User)[]).map((field) => (
+            <div key={field}>
+              <Typography variant="h5" gutterBottom>
+                Enter your {field}
+              </Typography>
+              <TextField
+                required
+                fullWidth
+                label={`Your ${field}`}
+                variant="outlined"
+                value={user[field]}
+                onChange={(e) => handleInputChange(field, e.target.value)}
+                sx={{ my: 2 }}
+              />
+            </div>
+          ))}
 
           <Button
             fullWidth
             variant="contained"
             color="primary"
             onClick={handleStart}
-            onKeyDown={(e) => e.key === "Enter" && handleStart()}
             disabled={
               !user.name.trim() ||
               !user.id.trim() ||

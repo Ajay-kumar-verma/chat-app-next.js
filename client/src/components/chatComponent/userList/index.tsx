@@ -27,18 +27,22 @@ const UserList = () => {
   useEffect(() => {
     getUsers((users: User[]) => {
       addUsers(users);
-      console.log("All Users", { users });
     });
 
     onNewUser((user: User) => {
       addUsers([user]);
-      console.log("new user joinned: ", user);
     });
 
     onDisconnect((socketId: string) => {
       removeUser(socketId);
     });
-  });
+
+    // Cleanup listeners on component unmount
+    return () => {
+      onNewUser(() => {});
+      onDisconnect(() => {});
+    };
+  }, [addUsers, removeUser]);
 
   return (
     <Box sx={{ maxWidth: 800, margin: "auto", mt: 5 }}>
@@ -63,7 +67,7 @@ const UserList = () => {
                 </Typography>
               ) : (
                 Users.map((user, index) => (
-                  <React.Fragment key={user.name}>
+                  <React.Fragment key={user.id}>
                     <ListItem
                       onClick={() => handleUserClick(user)}
                       sx={{

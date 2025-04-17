@@ -1,8 +1,9 @@
 // socket.ts
 import { io } from "socket.io-client";
 import { Message, User } from "@/interface";
+
 const socket = io("http://localhost:3001", {
-  autoConnect: false, // disable auto connection
+  autoConnect: false, // Disable auto connection
 });
 
 export default socket;
@@ -50,13 +51,18 @@ export const disConnect = () => {
 };
 
 export const onDisconnect = (callback: (socketId: string) => void) => {
-  socket.on("userDisconneted", callback);
+  socket.on("userDisconnected", callback); // Fixed typo in event name
 };
 
 export const pingApi = async () => {
-  const response = await fetch("http://localhost:3001/api/ping");
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
+  try {
+    const response = await fetch("http://localhost:3001/api/ping");
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error pinging API:", error);
+    throw error;
   }
-  return response.json();
 };

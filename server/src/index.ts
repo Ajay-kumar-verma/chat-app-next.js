@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
     users = users.filter(({ socketId }) => socketId !== socket.id);
     console.log("After filter:");
     console.table(users);
-    socket.broadcast.emit("userDisconneted", socket.id);
+    socket.broadcast.emit("userDisconnected", socket.id);
   });
 });
 

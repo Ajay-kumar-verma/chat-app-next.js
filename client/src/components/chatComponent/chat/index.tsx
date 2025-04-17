@@ -21,9 +21,11 @@ const BeautifulChat = () => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    onMessage((message: Message) => {
+    const handleNewMessage = (message: Message) => {
       addMsg(message);
-    });
+    };
+
+    onMessage(handleNewMessage);
 
     const scrollToBottom = () => {
       if (bottomRef.current) {
@@ -32,16 +34,23 @@ const BeautifulChat = () => {
     };
 
     scrollToBottom();
-  });
+
+    return () => {
+      // Cleanup listener when component unmounts
+      onMessage(() => {});
+    };
+  }, [Messages, addMsg]);
 
   const handleSend = () => {
     if (message.trim() === "") return;
-    const msg = {
+
+    const msg: Message = {
       from: { socketId: myInfo.socketId || "", name: myInfo.name },
       to: { socketId: currentUser.socketId || "", name: currentUser.name },
       senderId: myInfo.id,
       text: message,
     };
+
     addMsg(msg);
     sendMessage(msg);
     setMessage("");
@@ -64,15 +73,16 @@ const BeautifulChat = () => {
         {Messages.length === 0 ? (
           <EmptyState message="No messages yet. Start the conversation!" />
         ) : (
-          Messages.map((msg, i) => {
+          Messages.map((msg,i) => {
             const isMe: boolean = msg.from?.socketId === myInfo?.socketId;
-            const IsShow: boolean =
+            const isVisible: boolean =
               msg.from?.socketId === currentUser?.socketId ||
               msg.to?.socketId === currentUser?.socketId;
+
             return (
-              IsShow && (
+              isVisible && (
                 <Box
-                  key={i}
+                  key={i} 
                   sx={{
                     display: "flex",
                     justifyContent: isMe ? "flex-end" : "flex-start",
@@ -88,7 +98,7 @@ const BeautifulChat = () => {
                       borderRadius: 3,
                       borderTopRightRadius: isMe ? 0 : 3,
                       borderTopLeftRadius: isMe ? 3 : 0,
-                      boxShadow: 1, // Added subtle shadow
+                      boxShadow: 1,
                     }}
                   >
                     {!isMe && (
@@ -118,7 +128,7 @@ const BeautifulChat = () => {
           sx={{
             backgroundColor: "background.paper",
             borderRadius: 2,
-            boxShadow: 1, // Added shadow for input field
+            boxShadow: 1,
           }}
         />
         <IconButton color="primary" onClick={handleSend}>

@@ -1,14 +1,14 @@
 "use client";
 import { useState } from "react";
 import NameEntry from "@/components/nameEntry/page";
-import ChatComponent from "@/components/chatComponent"; // Your main chat logic
+import ChatComponent from "@/components/chatComponent";
 
 export default function ChatRoom() {
-  const [login, setLogin] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  if (!login) {
-    return <NameEntry Login={setLogin} />;
-  } else {
-    return <ChatComponent />;
-  }
+  return isLoggedIn ? (
+    <ChatComponent />
+  ) : (
+    <NameEntry Login={setIsLoggedIn} />
+  );
 }
