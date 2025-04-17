@@ -7,8 +7,8 @@ export default function ChatRoom() {
   const [login, setLogin] = useState<Boolean>(false);
 
   if (!login) {
-    return <NameEntry key={0} Login={setLogin} />;
+    return <NameEntry  Login={setLogin} />;
   } else {
-    return <ChatComponent key={1} />;
+    return <ChatComponent  />;
   }
 }

@@ -40,50 +40,62 @@ const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
   };
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        bgcolor: "#f5f5f5",
-      }}
-    >
-      {contextHolder}
-      <Paper elevation={3} sx={{ p: 4, maxWidth: 400, mx: "auto" }}>
-        {(["name", "id", "role", "avatar"] as (keyof User)[]).map((field,i) => {
-          return (
-            <div key={i}>
-              <Typography variant="h5" gutterBottom>
-                Enter your {field}
-              </Typography>
-              <TextField
-                required
-                fullWidth
-                label={`Your ${field}`}
-                variant="outlined"
-                value={user[field]}
-                onChange={(e) =>
-                  setUser((pre) => ({ ...pre, [field]: e.target.value.trim() }))
-                }
-                sx={{ my: 2 }}
-              />
-            </div>
-          );
-        })}
+    <div>
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          bgcolor: "#f5f5f5",
+        }}
+      >
+        {contextHolder}
+        <Paper elevation={3} sx={{ p: 4, maxWidth: 400, mx: "auto" }}>
+          {(["name", "id", "role", "avatar"] as (keyof User)[]).map(
+            (field, i) => {
+              return (
+                <div key={i}>
+                  <Typography variant="h5" gutterBottom>
+                    Enter your {field}
+                  </Typography>
+                  <TextField
+                    required
+                    fullWidth
+                    label={`Your ${field}`}
+                    variant="outlined"
+                    value={user[field]}
+                    onChange={(e) =>
+                      setUser((pre) => ({
+                        ...pre,
+                        [field]: e.target.value.trim(),
+                      }))
+                    }
+                    sx={{ my: 2 }}
+                  />
+                </div>
+              );
+            }
+          )}
 
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={handleStart}
-          onKeyDown={(e) => e.key === "Enter" && handleStart()}
-          disabled={!user.name.trim() || !user.id.trim()  || !user.role.trim() || !user.avatar.trim()}
-        >
-          Get Started
-        </Button>
-      </Paper>
-    </Box>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={handleStart}
+            onKeyDown={(e) => e.key === "Enter" && handleStart()}
+            disabled={
+              !user.name.trim() ||
+              !user.id.trim() ||
+              !user.role.trim() ||
+              !user.avatar.trim()
+            }
+          >
+            Get Started
+          </Button>
+        </Paper>
+      </Box>
+    </div>
   );
 };
 
