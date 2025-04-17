@@ -22,7 +22,7 @@ const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
   });
 
   const handleStart = async () => {
-    let isUserDataOkay: Boolean = true;
+    let isUserDataOkay: boolean = true;
     for (const key of Object.keys(user)) {
       if (user[key as keyof User] === "") {
         messageApi.open({

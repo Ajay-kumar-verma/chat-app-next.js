@@ -14,16 +14,10 @@ import {
 } from "@mui/material";
 import { User } from "@/interface";
 import useStore from "@/store";
-import {
-  getUsers,
-  onNewUser,
-  sendMyDetail,
-  onDisconnect,
-  socketId,
-} from "@/socket";
+import { getUsers, onNewUser, onDisconnect } from "@/socket";
 
 const UserList = () => {
-  const { currentUser, setCurrentUser, addUsers, Users, removeUser, myInfo } =
+  const { currentUser, setCurrentUser, addUsers, Users, removeUser } =
     useStore();
 
   const handleUserClick = (user: User) => {
@@ -31,7 +25,6 @@ const UserList = () => {
   };
 
   useEffect(() => {
-   
     getUsers((users: User[]) => {
       addUsers(users);
       console.log("All Users", { users });
@@ -45,7 +38,7 @@ const UserList = () => {
     onDisconnect((socketId: string) => {
       removeUser(socketId);
     });
-  }, []);
+  });
 
   return (
     <Box sx={{ maxWidth: 800, margin: "auto", mt: 5 }}>

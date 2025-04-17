@@ -32,7 +32,7 @@ const BeautifulChat = () => {
     };
 
     scrollToBottom();
-  }, []);
+  });
 
   const handleSend = () => {
     if (message.trim() === "") return;
@@ -65,8 +65,8 @@ const BeautifulChat = () => {
           <EmptyState message="No messages yet. Start the conversation!" />
         ) : (
           Messages.map((msg, i) => {
-            const isMe: Boolean = msg.from?.socketId === myInfo?.socketId;
-            const IsShow: Boolean =
+            const isMe: boolean = msg.from?.socketId === myInfo?.socketId;
+            const IsShow: boolean =
               msg.from?.socketId === currentUser?.socketId ||
               msg.to?.socketId === currentUser?.socketId;
             return (
