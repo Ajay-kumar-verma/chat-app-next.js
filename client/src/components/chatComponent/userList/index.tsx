@@ -14,10 +14,17 @@ import {
 } from "@mui/material";
 import { User } from "@/interface";
 import useStore from "@/store";
-import { getUsers,  onNewUser, sendMyDetail } from "@/socket";
+import {
+  getUsers,
+  onNewUser,
+  sendMyDetail,
+  onDisconnect,
+  socketId,
+} from "@/socket";
 
 const UserList = () => {
-  const { currentUser, setCurrentUser, addUsers, Users,myInfo } = useStore();
+  const { currentUser, setCurrentUser, addUsers, Users, removeUser, myInfo } =
+    useStore();
 
   const handleUserClick = (user: User) => {
     setCurrentUser(user);
@@ -25,14 +32,19 @@ const UserList = () => {
 
   useEffect(() => {
     sendMyDetail(myInfo);
+
     getUsers((users: User[]) => {
       addUsers(users);
-      console.log("All, usersa", { users });
+      console.log("All Users", { users });
     });
 
     onNewUser((user: User) => {
       addUsers([user]);
       console.log("new user joinned: ", user);
+    });
+
+    onDisconnect((socketId: string) => {
+      removeUser(socketId);
     });
   }, []);
 

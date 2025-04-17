@@ -13,6 +13,7 @@ interface StoreState {
   addMsg: (msg: Message) => void;
   Users: User[];
   addUsers: (user: User[]) => void;
+  removeUser: (id: string) => void;
 }
 
 const useStore = create<StoreState>((set) => ({
@@ -41,6 +42,10 @@ const useStore = create<StoreState>((set) => ({
       Users: [
         ...new Map([...Users, ...user].map((item) => [item.id, item])).values(),
       ],
+    })),
+  removeUser: (id: string) =>
+    set(({ Users }) => ({
+      Users: [...Users.filter(({ socketId }) => socketId !== id)],
     })),
 }));
 

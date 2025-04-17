@@ -37,16 +37,20 @@ export const onNewUser = (callback: (user: User) => void) => {
   socket.on("newUser", callback);
 };
 
-export const onMessage = (callback: (message: Message) => void) => {
-  socket.on("message", callback);
-};
-
 export const sendMessage = (message: Message) => {
   socket.emit("message", message);
 };
 
+export const onMessage = (callback: (message: Message) => void) => {
+  socket.on("message", callback);
+};
+
 export const disconnect = () => {
   socket.disconnect();
+};
+
+export const onDisconnect = (callback: (socketId: string) => void) => {
+  socket.on("userDisconneted", callback);
 };
 
 export const pingApi = async () => {
