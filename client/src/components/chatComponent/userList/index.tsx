@@ -31,8 +31,7 @@ const UserList = () => {
   };
 
   useEffect(() => {
-    sendMyDetail(myInfo);
-
+   
     getUsers((users: User[]) => {
       addUsers(users);
       console.log("All Users", { users });

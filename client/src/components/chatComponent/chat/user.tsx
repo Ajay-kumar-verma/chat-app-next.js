@@ -7,14 +7,17 @@ import {
   ListItemText,
   ListItemAvatar,
   Avatar,
+  Button,
 } from "@mui/material";
 import useStore from "@/store";
+import { connect, disConnect, socketId, sendMyDetail } from "@/socket";
+import { useState } from "react";
 
 export default function RootLayout() {
   const {
     currentUser: { name, id, role, avatar },
   } = useStore();
-  
+
   return (
     <Container maxWidth="xl">
       <Box
@@ -78,12 +81,49 @@ export default function RootLayout() {
               slotProps={{ primary: { style: { fontWeight: "bold" } } }}
             />
           </ListItem>
-
           <Typography variant="h6" gutterBottom>
-            User ID <strong>{id}</strong>
+            <ColorToggleButton />
           </Typography>
         </Box>
       </Box>
     </Container>
   );
 }
+
+const ColorToggleButton = () => {
+  const { setMyInfo, myInfo } = useStore();
+  const [clicked, setClicked] = useState(false);
+
+  const handleClick = async () => {
+    connect();
+    const id = (await socketId()) || "";
+    setMyInfo({ ...myInfo, socketId: id });
+    sendMyDetail({ ...myInfo, socketId: id });
+    setClicked((prev) => !prev);
+  };
+
+  return (
+    <>
+      {clicked ? "🟢" : "🔴"}
+      <Button
+        variant="contained"
+        onClick={
+          clicked
+            ? () => {
+                disConnect();
+                setClicked((prev) => !prev);
+              }
+            : handleClick
+        }
+        sx={{
+          backgroundColor: clicked ? "#4caf50" : "#e91e63",
+          "&:hover": {
+            backgroundColor: clicked ? "#388e3c" : "#1565c0",
+          },
+        }}
+      >
+        {myInfo.name}
+      </Button>
+    </>
+  );
+};

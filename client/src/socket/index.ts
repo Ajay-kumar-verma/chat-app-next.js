@@ -15,7 +15,7 @@ export const socketId = async () => {
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(`Resolved`);
-    }, 100);
+    }, 1000);
   });
 
   return socket.id;
@@ -45,7 +45,7 @@ export const onMessage = (callback: (message: Message) => void) => {
   socket.on("message", callback);
 };
 
-export const disconnect = () => {
+export const disConnect = () => {
   socket.disconnect();
 };
 

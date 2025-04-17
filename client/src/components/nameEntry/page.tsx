@@ -5,7 +5,6 @@ import { Box, Button, TextField, Typography, Paper } from "@mui/material";
 import { User } from "@/interface";
 import { message } from "antd";
 import useStore from "@/store";
-import { connect, socketId } from "@/socket";
 
 interface NameEntryProps {
   Login: (value: boolean) => void;
@@ -35,10 +34,7 @@ const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
       }
     }
     if (isUserDataOkay) {
-      connect();
-      const id = (await socketId()) || "";
-      console.log({ socketId: id });
-      setMyInfo({ ...user, socketId: id });
+      setMyInfo(user);
       Login(true);
     }
   };
@@ -55,9 +51,9 @@ const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
     >
       {contextHolder}
       <Paper elevation={3} sx={{ p: 4, maxWidth: 400, mx: "auto" }}>
-        {(["name", "id", "role", "avatar"] as (keyof User)[]).map((field) => {
+        {(["name", "id", "role", "avatar"] as (keyof User)[]).map((field,i) => {
           return (
-            <>
+            <div key={i}>
               <Typography variant="h5" gutterBottom>
                 Enter your {field}
               </Typography>
@@ -72,7 +68,7 @@ const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
                 }
                 sx={{ my: 2 }}
               />
-            </>
+            </div>
           );
         })}
 
@@ -82,7 +78,7 @@ const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
           color="primary"
           onClick={handleStart}
           onKeyDown={(e) => e.key === "Enter" && handleStart()}
-          // disabled={!name.trim()}
+          disabled={!user.name.trim() || !user.id.trim()  || !user.role.trim() || !user.avatar.trim()}
         >
           Get Started
         </Button>

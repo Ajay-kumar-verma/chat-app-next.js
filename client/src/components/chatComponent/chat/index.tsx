@@ -65,10 +65,10 @@ const BeautifulChat = () => {
           <EmptyState message="No messages yet. Start the conversation!" />
         ) : (
           Messages.map((msg, i) => {
-            const isMe: Boolean = msg.from.socketId === myInfo.socketId;
+            const isMe: Boolean = msg.from?.socketId === myInfo?.socketId;
             const IsShow: Boolean =
-              msg.from.socketId === currentUser.socketId ||
-              msg.to.socketId === currentUser.socketId;
+              msg.from?.socketId === currentUser?.socketId ||
+              msg.to?.socketId === currentUser?.socketId;
             return (
               IsShow && (
                 <Box

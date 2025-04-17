@@ -33,10 +33,11 @@ io.on("connection", (socket) => {
   socket.emit("message", { user: "Team", text: "Welcome to the chat!" }); // send a welcome message to the client
 
   socket.on("myDetail", (user: User) => {
+    console.table(user);
     socket.broadcast.emit("newUser", user);
     socket.emit("getUsers", users);
     users.push(user);
-    console.log("All connected users: ", users);
+    console.table(users);
   });
 
   socket.on("message", (data) => {
@@ -44,13 +45,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("Socket ID: ", socket.id, users);
+    // console.table([{ label: "Socket ID", value: socket.id }, ...users]);
     users = users.filter(({ socketId }) => socketId !== socket.id);
-    console.log("After filter: ", users);
+    console.log("After filter:");
+    console.table(users);
     socket.broadcast.emit("userDisconneted", socket.id);
   });
 });
 
 server.listen(3001, () => {
-  console.log("Backend running at http://localhost:3001");
+  console.table("Backend running at http://localhost:3001");
 });
