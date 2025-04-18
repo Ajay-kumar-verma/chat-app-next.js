@@ -5,13 +5,9 @@ import { User } from "@/interface";
 import { message } from "antd";
 import useStore from "@/store";
 
-interface NameEntryProps {
-  Login: (value: boolean) => void;
-}
-
-const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
+const NameEntry: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
-  const { setMyInfo } = useStore();
+  const { setMyInfo,Loggin } = useStore();
   const [user, setUser] = useState<User>({
     id: "0",
     name: "Aj verma",
@@ -41,7 +37,7 @@ const NameEntry: React.FC<NameEntryProps> = ({ Login }) => {
     }
     if (isUserDataOkay) {
       setMyInfo(user);
-      Login(true);
+      Loggin(true);
     }
   };
 

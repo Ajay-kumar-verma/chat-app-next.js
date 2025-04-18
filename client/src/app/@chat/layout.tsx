@@ -1,10 +1,16 @@
 "use client";
 import React from "react";
 import { Box, Paper } from "@mui/material";
-import UserList from "./userList";
-import ChatSection from "./chat";
 
-const BeautifulChat = () => {
+const Chat = ({
+    children,
+    userList,
+    chats
+  }: Readonly<{
+    children: React.ReactNode;
+    userList: React.ReactNode;
+    chats: React.ReactNode;
+  }>) => {
   return (
     <Box
       sx={{
@@ -27,7 +33,7 @@ const BeautifulChat = () => {
           mr: 2, // Add margin to separate from chat section
         }}
       >
-        <UserList />
+      {userList}
       </Paper>
 
       {/* Chat Section */}
@@ -41,10 +47,10 @@ const BeautifulChat = () => {
           bgcolor: "background.paper",
         }}
       >
-        <ChatSection />
+        {chats}
       </Paper>
     </Box>
   );
 };
 
-export default BeautifulChat;
+export default Chat;

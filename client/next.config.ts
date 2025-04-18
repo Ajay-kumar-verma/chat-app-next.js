@@ -1,8 +1,18 @@
-import type { NextConfig } from "next";
+// next.config.js
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: false,
-  devIndicators: false
+  devIndicators: false,
+  async redirects() {
+    return [
+      {
+        source: '/old-page',      // the old route
+        destination: '/new-page', // where it should go
+        permanent: true,          // true = 308 (permanent), false = 307 (temporary)
+      },
+    ];
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

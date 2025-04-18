@@ -10,12 +10,17 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import User from "./user";
 import useStore from "@/store";
 import { onMessage, sendMessage } from "@/socket";
 import { Message } from "@/interface";
 
-const BeautifulChat = () => {
+const BeautifulChat = ({
+    children,
+    user,
+  }: Readonly<{
+    children: React.ReactNode;
+    user: React.ReactNode;
+  }>) => {
   const { Messages, addMsg, currentUser, myInfo } = useStore();
   const [message, setMessage] = useState<string>("");
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -68,7 +73,7 @@ const BeautifulChat = () => {
         bgcolor: "background.paper",
       }}
     >
-      <User />
+      {user}
       <Stack spacing={2}>
         {Messages.length === 0 ? (
           <EmptyState message="No messages yet. Start the conversation!" />

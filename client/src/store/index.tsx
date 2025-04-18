@@ -5,6 +5,8 @@ import UserList from "./TeamUserList";
 import InitialMessages from "./TeamMessages";
 
 interface StoreState {
+  isLoggedIn:boolean,
+  Loggin:(isLoggedIn:boolean)=>void, 
   myInfo: User;
   setMyInfo: (myInfo: User) => void;
   currentUser: User;
@@ -17,6 +19,8 @@ interface StoreState {
 }
 
 const useStore = create<StoreState>((set) => ({
+  isLoggedIn:false,
+  Loggin:(isLoggedIn:boolean)=>set(()=>({isLoggedIn})), 
   myInfo: {
     id: "NAN",
     name: "unknown",
