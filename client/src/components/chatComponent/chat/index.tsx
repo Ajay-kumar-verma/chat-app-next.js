@@ -35,11 +35,11 @@ const BeautifulChat = () => {
 
     scrollToBottom();
 
-    return () => {
-      // Cleanup listener when component unmounts
-      onMessage(() => {});
-    };
-  }, [Messages, addMsg]);
+    // return () => {
+    //   // Cleanup listener when component unmounts
+    //   onMessage(() => {});
+    // };
+  }, []);
 
   const handleSend = () => {
     if (message.trim() === "") return;
