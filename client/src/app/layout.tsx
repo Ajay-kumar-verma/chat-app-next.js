@@ -1,13 +1,10 @@
 "use client";
-
 import useStore from "@/store";
 
 export default function ChatRoom({
-  children,
   login,
   chat,
 }: Readonly<{
-  children: React.ReactNode;
   login: React.ReactNode;
   chat: React.ReactNode;
 }>) {

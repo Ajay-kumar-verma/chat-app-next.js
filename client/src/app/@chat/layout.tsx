@@ -3,11 +3,9 @@ import React from "react";
 import { Box, Paper } from "@mui/material";
 
 const Chat = ({
-    children,
     userList,
     chats
   }: Readonly<{
-    children: React.ReactNode;
     userList: React.ReactNode;
     chats: React.ReactNode;
   }>) => {

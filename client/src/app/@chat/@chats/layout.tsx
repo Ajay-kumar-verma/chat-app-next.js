@@ -15,10 +15,8 @@ import { onMessage, sendMessage } from "@/socket";
 import { Message } from "@/interface";
 
 const BeautifulChat = ({
-    children,
     user,
   }: Readonly<{
-    children: React.ReactNode;
     user: React.ReactNode;
   }>) => {
   const { Messages, addMsg, currentUser, myInfo } = useStore();
